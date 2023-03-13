@@ -20,7 +20,7 @@ function buildHtml(context: EventContext<Env, any, Record<string, unknown>>): st
 	</head>
 	<body>
 	<div>
-	<p>Check the meta tag</p>
+	<p>You're being redirected to the repository's URL</p>
 	</div>
 	</body>
 	</html>
