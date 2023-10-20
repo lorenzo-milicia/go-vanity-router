@@ -34,7 +34,7 @@ function buildMetaTag(context: EventContext<Env, any, Record<string, unknown>>):
     let customRoutings = getCustomRoutingsFrom(context.env.CUSTOM_ROUTINGS)
     let repositoryPath = routeVanityPath(vanityPath, customRoutings)
 
-    return `<meta name="go-import" content="https://${customDomain}${vanityPath} git https://${repositoryUrl}${repositoryPath}">`
+    return `<meta name="go-import" content="${customDomain}${vanityPath} git https://${repositoryUrl}${repositoryPath}">`
 }
 
 function buildRoutingTag(context: EventContext<Env, any, Record<string, unknown>>): string {
