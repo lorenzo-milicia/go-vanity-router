@@ -63,5 +63,17 @@ function routeVanityPath(vanityPath: string, customRoutings: Map<string, string>
             repositoryPath = repositoryPath.replace(key, value)
         }
     )
-    return repositoryPath
+    let pathWithoutVersion = removeVersionFromPath(repositoryPath)
+    return pathWithoutVersion 
 }
+
+function removeVersionFromPath(inputPath: string): string {
+  // Use a regular expression to match the final "/vN" pattern
+  const regex = /\/v\d+$/;
+
+  // Use the `replace` method to remove the matched pattern
+  const updatedPath = inputPath.replace(regex, '');
+
+  return updatedPath;
+}
+
