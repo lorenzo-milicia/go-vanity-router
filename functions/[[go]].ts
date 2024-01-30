@@ -51,7 +51,7 @@ function getCustomRoutingsFrom(routingsEnv: string): Map<string, string> {
     let splitString = routingsEnv.split(",")
     let map = new Map()
     for (let i = 0; i < splitString.length / 2; i++) {
-        map.set(splitString[i], splitString[i + 1])
+        map.set(splitString[2*i], splitString[2*i + 1])
     }
     return map
 }
