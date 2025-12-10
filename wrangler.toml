@@ -10,5 +10,11 @@ GITHUB_USERNAME = "lorenzo-milicia"
 CUSTOM_DOMAIN = "go.lorenzomilicia.dev"
 # Custom URL mappings as colon-separated pairs
 # Format: "path_prefix:repo_prefix:path_prefix2:repo_prefix2"
-# Example: "/libs:go-lib-:/utils:go-util-"
-URL_MAPPINGS = "/libs:go-lib-"
+# Example: "libs/:go-lib-:/utils:go-util-"
+# Note: path_prefix should not include leading slash, but should include trailing slash if needed
+URL_MAPPINGS = "libs/:go-lib-"
+
+# KV namespace for caching GitHub API responses (1 hour TTL)
+[[kv_namespaces]]
+binding = "GITHUB_CACHE"
+id = "b2d554a0dbb14868aa7ca2bb87cfbee4"
