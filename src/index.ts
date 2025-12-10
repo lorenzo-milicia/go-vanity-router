@@ -22,12 +22,14 @@ app.get('/.well-known/*', (c) => c.notFound());
 // Home page - list all Go repositories
 app.get('/', async (c) => {
   const env = c.env;
+  const mappings = parseURLMappings(env.URL_MAPPINGS);
   const goRepos = await fetchGoRepos(env.GITHUB_USERNAME, env.GITHUB_CACHE, env.GITHUB_TOKEN);
   
   const html = renderHomePage({
     githubUsername: env.GITHUB_USERNAME,
     customDomain: env.CUSTOM_DOMAIN,
     repositories: goRepos,
+    mappings,
   });
   
   return c.html(html);

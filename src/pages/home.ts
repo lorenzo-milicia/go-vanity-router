@@ -1,12 +1,14 @@
 import { GitHubRepo } from '../utils/github';
+import { URLMapping, reverseApplyURLMappings } from '../utils/urlMappings';
 
 interface HomePageProps {
   githubUsername: string;
   customDomain: string;
   repositories: GitHubRepo[];
+  mappings?: URLMapping[];
 }
 
-export function renderHomePage({ githubUsername, customDomain, repositories }: HomePageProps): string {
+export function renderHomePage({ githubUsername, customDomain, repositories, mappings }: HomePageProps): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -270,23 +272,26 @@ export function renderHomePage({ githubUsername, customDomain, repositories }: H
       ${repositories.length > 0 ? `
         <h2 class="section-title">📚 Available Go Packages (${repositories.length})</h2>
         <div class="repos-grid">
-          ${repositories.map(repo => `
-            <div class="repo-card">
-              <div class="repo-name">${repo.name}</div>
-              ${repo.description ? `
-                <div class="repo-description">${repo.description}</div>
-              ` : ''}
-              <div class="repo-stats">
-                <span class="stat">⭐ ${repo.stargazers_count}</span>
-                <span class="stat">🔀 ${repo.forks_count}</span>
-                ${repo.license ? `<span class="stat">📜 ${repo.license.name}</span>` : ''}
+          ${repositories.map(repo => {
+            const pkgPath = mappings && mappings.length ? reverseApplyURLMappings(repo.name, mappings) : `/${repo.name}`;
+            return `
+              <div class="repo-card">
+                <div class="repo-name">${repo.name}</div>
+                ${repo.description ? `
+                  <div class="repo-description">${repo.description}</div>
+                ` : ''}
+                <div class="repo-stats">
+                  <span class="stat">⭐ ${repo.stargazers_count}</span>
+                  <span class="stat">🔀 ${repo.forks_count}</span>
+                  ${repo.license ? `<span class="stat">📜 ${repo.license.name}</span>` : ''}
+                </div>
+                <div class="repo-links">
+                  <a href="${pkgPath}" class="repo-link">View Package</a>
+                  <a href="${repo.html_url}" class="repo-link secondary" target="_blank">GitHub</a>
+                </div>
               </div>
-              <div class="repo-links">
-                <a href="/${repo.name}" class="repo-link">View Package</a>
-                <a href="${repo.html_url}" class="repo-link secondary" target="_blank">GitHub</a>
-              </div>
-            </div>
-          `).join('')}
+            `
+          }).join('')}
         </div>
       ` : `
         <div class="empty-state">

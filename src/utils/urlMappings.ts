@@ -53,3 +53,23 @@ export function applyURLMappings(path: string, mappings: URLMapping[]): string {
   // No mapping found, return path as-is (without leading slash)
   return pathWithoutSlash;
 }
+
+/**
+ * Reverse mapping: given a repo name, return the site path (starting with '/')
+ * Example: repoName 'go-lib-checksum' with mapping { pathPrefix: 'libs', repoPrefix: 'go-lib-' }
+ * returns '/libs/checksum'
+ */
+export function reverseApplyURLMappings(repoName: string, mappings: URLMapping[]): string {
+  for (const mapping of mappings) {
+    if (repoName.startsWith(mapping.repoPrefix)) {
+      const remainder = repoName.substring(mapping.repoPrefix.length);
+      if (remainder) {
+        return `/${mapping.pathPrefix}/${remainder}`;
+      }
+      return `/${mapping.pathPrefix}`;
+    }
+  }
+
+  // No mapping matched — return slash + repoName
+  return `/${repoName}`;
+}
