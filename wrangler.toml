@@ -1,0 +1,14 @@
+name = "go-vanity-router"
+main = "src/index.ts"
+compatibility_date = "2025-12-10"
+
+# Environment variables for configuration
+[vars]
+# Your GitHub username or organization
+GITHUB_USERNAME = "lorenzo-milicia"
+# Your custom domain (e.g., "go.example.com")
+CUSTOM_DOMAIN = "go.lorenzomilicia.dev"
+# Custom URL mappings as colon-separated pairs
+# Format: "path_prefix:repo_prefix:path_prefix2:repo_prefix2"
+# Example: "/libs:go-lib-:/utils:go-util-"
+URL_MAPPINGS = "/libs:go-lib-"
