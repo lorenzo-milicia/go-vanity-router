@@ -112,6 +112,7 @@ export function renderHomePage({ githubUsername, customDomain, repositories, map
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
+      height: 100%;
     }
     
     .repo-card:hover {
@@ -126,16 +127,31 @@ export function renderHomePage({ githubUsername, customDomain, repositories, map
       color: #2d3748;
       margin-bottom: 0.5rem;
       word-break: break-word;
+      /* clamp to two lines and hide overflow so long names don't push layout */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* reserve two-line height so cards align when title missing */
+      min-height: 3.2rem;
     }
     
     .repo-description {
       color: #718096;
       font-size: 0.95rem;
       margin-bottom: 1rem;
-      flex-grow: 1;
       line-height: 1.5;
+      /* reserve vertical space so cards remain aligned even when description is empty */
+      min-height: 3.2rem;
     }
     
+    /* meta area (stats + license) reserve space to avoid shifting buttons */
+    .repo-meta {
+      min-height: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+
     .repo-stats {
       display: flex;
       gap: 1rem;
@@ -143,6 +159,11 @@ export function renderHomePage({ githubUsername, customDomain, repositories, map
       font-size: 0.9rem;
       color: #718096;
       flex-wrap: wrap;
+    }
+
+    /* ensure stats area has reserved height so buttons align */
+    .repo-stats {
+      min-height: 1.6rem;
     }
     
     .stat {
@@ -155,10 +176,12 @@ export function renderHomePage({ githubUsername, customDomain, repositories, map
       display: flex;
       gap: 0.75rem;
       flex-wrap: wrap;
+      /* push links to the bottom of the card */
+      margin-top: auto;
     }
     
     .repo-link {
-      flex: 1;
+      flex: 1 1 120px;
       min-width: 100px;
       text-align: center;
       padding: 0.6rem 1rem;
@@ -169,7 +192,12 @@ export function renderHomePage({ githubUsername, customDomain, repositories, map
       font-weight: 600;
       font-size: 0.9rem;
       transition: all 0.2s;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      /* keep buttons visually consistent height */
+      height: 40px;
+      box-sizing: border-box;
     }
     
     .repo-link:hover {
@@ -274,16 +302,18 @@ export function renderHomePage({ githubUsername, customDomain, repositories, map
         <div class="repos-grid">
           ${repositories.map(repo => {
             const pkgPath = mappings && mappings.length ? reverseApplyURLMappings(repo.name, mappings) : `/${repo.name}`;
+            const title = repo.name || (repo.html_url ? repo.html_url.split('/').pop() : 'untitled');
+            const descriptionHtml = repo.description ? repo.description : '&nbsp;';
             return `
               <div class="repo-card">
-                <div class="repo-name">${repo.name}</div>
-                ${repo.description ? `
-                  <div class="repo-description">${repo.description}</div>
-                ` : ''}
-                <div class="repo-stats">
-                  <span class="stat">⭐ ${repo.stargazers_count}</span>
-                  <span class="stat">🔀 ${repo.forks_count}</span>
-                  ${repo.license ? `<span class="stat">📜 ${repo.license.name}</span>` : ''}
+                <div class="repo-name">${title}</div>
+                  <div class="repo-description">${descriptionHtml}</div>
+                <div class="repo-meta">
+                  <div class="repo-stats">
+                    <span class="stat">⭐ ${repo.stargazers_count}</span>
+                    <span class="stat">🔀 ${repo.forks_count}</span>
+                    ${repo.license ? `<span class="stat">📜 ${repo.license.name}</span>` : ''}
+                  </div>
                 </div>
                 <div class="repo-links">
                   <a href="${pkgPath}" class="repo-link">View Package</a>
