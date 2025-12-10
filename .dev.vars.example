@@ -1,0 +1,5 @@
+# GitHub API Token (optional)
+# Generate at: https://github.com/settings/tokens
+# Scopes needed: public_repo (for public repositories)
+# This increases rate limit from 60 requests/hour to 5000 requests/hour
+GITHUB_TOKEN=ghp_your_token_here
