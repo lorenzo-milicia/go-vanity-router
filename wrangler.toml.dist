@@ -1,0 +1,20 @@
+name = "go-vanity-router"
+main = "src/index.ts"
+compatibility_date = "YYYY-MM-DD"
+
+# Example config file for local use. Copy to `wrangler.toml` and fill
+# in real values. Do NOT commit secret values.
+[vars]
+# Your GitHub username or organization (replace with your username)
+GITHUB_USERNAME = "your-github-username"
+# Your custom domain (e.g. "go.example.com")
+CUSTOM_DOMAIN = "example.com"
+# Optional custom URL mappings as colon-separated pairs
+# Format: "path_prefix:repo_prefix[:path_prefix2:repo_prefix2]"
+# Example: "libs/:go-lib-:/utils:go-util-"
+URL_MAPPINGS = ""
+
+# KV namespace placeholder for caching GitHub API responses
+[[kv_namespaces]]
+binding = "GITHUB_CACHE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
